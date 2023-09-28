@@ -29,15 +29,15 @@ class MagneticSensorPWM: public Sensor{
     MagneticSensorPWM(uint8_t _pinPWM, int freqHz, int _total_pwm_clocks, int _min_pwm_clocks, int _max_pwm_clocks);
 
     // initialize the sensor hardware
-    void init();
+    virtual void init();
 
     int pinPWM;
     
     // Interrupt-safe update
-    void update() override;
+    virtual void update() override;
 
     // get current angle (rad)
-    float getSensorAngle() override;
+    virtual float getSensorAngle() override;
   
     // pwm handler
     void handlePWM();

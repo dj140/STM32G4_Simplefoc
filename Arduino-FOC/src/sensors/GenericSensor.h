@@ -19,11 +19,11 @@ class GenericSensor: public Sensor{
     float (*readCallback)() = nullptr; //!< function pointer to sensor reading
     void (*initCallback)() = nullptr; //!< function pointer to sensor initialisation
 
-    void init() override;
+    virtual void init() override;
 
     // Abstract functions of the Sensor class implementation
     /** get current angle (rad) */
-    float getSensorAngle() override;
+    virtual float getSensorAngle() override;
 
 };
 

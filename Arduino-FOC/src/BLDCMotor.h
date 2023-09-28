@@ -39,24 +39,24 @@ class BLDCMotor: public FOCMotor
     BLDCDriver* driver; 
     
     /**  Motor hardware init function */
-  	void init() override;
+  	virtual void init() override;
     /** Motor disable function */
-  	void disable() override;
+  	virtual void disable() override;
     /** Motor enable function */
-    void enable() override;
+    virtual void enable() override;
 
     /**
      * Function initializing FOC algorithm
      * and aligning sensor's and motors' zero position 
      */  
-    int initFOC() override;
+    virtual int initFOC() override;
     /**
      * Function running FOC algorithm in real-time
      * it calculates the gets motor angle and sets the appropriate voltages 
      * to the phase pwm signals
      * - the faster you can run it the better Arduino UNO ~1ms, Bluepill ~ 100us
      */ 
-    void loopFOC() override;
+    virtual void loopFOC() override;
 
     /**
      * Function executing the control loops set by the controller parameter of the BLDCMotor.
@@ -66,7 +66,7 @@ class BLDCMotor: public FOCMotor
      * 
      * This function doesn't need to be run upon each loop execution - depends of the use case
      */
-    void move(float target = NOT_SET) override;
+    virtual void move(float target = NOT_SET) override;
     
     float Ua, Ub, Uc;//!< Current phase voltages Ua,Ub and Uc set to motor
     float	Ualpha, Ubeta; //!< Phase voltages U alpha and U beta used for inverse Park and Clarke transform
@@ -79,7 +79,7 @@ class BLDCMotor: public FOCMotor
     * @param Ud Current voltage in d axis to set to the motor
     * @param angle_el current electrical angle of the motor
     */
-    void setPhaseVoltage(float Uq, float Ud, float angle_el) override;
+    virtual void setPhaseVoltage(float Uq, float Ud, float angle_el) override;
 
   private:
     // FOC methods 

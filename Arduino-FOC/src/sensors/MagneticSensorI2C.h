@@ -43,10 +43,12 @@ class MagneticSensorI2C: public Sensor{
         
     /** sensor initialise pins */
     void init(TwoWire* _wire = &Wire);
+ 
+    using Sensor::init;
 
     // implementation of abstract functions of the Sensor class
     /** get current angle (rad) */
-    float getSensorAngle() override;
+    virtual float getSensorAngle() override;
 
     /** experimental function to check and fix SDA locked LOW issues */
     int checkBus(byte sda_pin , byte scl_pin );

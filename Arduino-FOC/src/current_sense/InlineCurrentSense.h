@@ -31,9 +31,9 @@ class InlineCurrentSense: public CurrentSense{
     InlineCurrentSense(float mVpA, int pinA, int pinB, int pinC = NOT_SET);
 
     // CurrentSense interface implementing functions 
-    int init() override;
-    PhaseCurrent_s getPhaseCurrents() override;
-    int driverAlign(float align_voltage) override;
+    virtual int init() override;
+    virtual PhaseCurrent_s getPhaseCurrents() override;
+    virtual int driverAlign(float align_voltage) override;
 
     // ADC measuremnet gain for each phase
     // support for different gains for different phases of more commonly - inverted phase currents

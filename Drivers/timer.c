@@ -123,7 +123,7 @@ void Timer_Init(TIM_TypeDef* TIMx, uint32_t InterruptTime_us, Timer_CallbackFunc
 //    NVIC_InitTypeDef NVIC_InitStructure;
 
     uint32_t arr, psc;
-    uint8_t TIMx_IRQn;
+    IRQn_Type TIMx_IRQn;
     TIMER_Type TIMERx;
 
 //    if(!IS_TIM_ALL_PERIPH(TIMx))

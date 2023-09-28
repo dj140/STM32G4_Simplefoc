@@ -20,7 +20,7 @@ class MagneticSensorAnalog: public Sensor{
     
 
     /** sensor initialise pins */
-    void init();
+    virtual void init();
 
     int pinAnalog; //!< encoder hardware pin A
     
@@ -29,7 +29,7 @@ class MagneticSensorAnalog: public Sensor{
     
     // implementation of abstract functions of the Sensor class
     /** get current angle (rad) */
-    float getSensorAngle() override;
+    virtual  float getSensorAngle() override;
     /** raw count (typically in range of 0-1023), useful for debugging resolution issues */
     int raw_count;
 

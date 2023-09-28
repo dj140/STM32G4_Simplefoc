@@ -22,7 +22,7 @@ class HallSensor: public Sensor{
     HallSensor(int encA, int encB, int encC, int pp);
 
     /** HallSensor initialise pins */
-    void init();
+    virtual void init();
     /**
      *  function enabling hardware interrupts for the HallSensor channels with provided callback functions
      *  if callback is not provided then the interrupt is not enabled
@@ -54,11 +54,11 @@ class HallSensor: public Sensor{
 
     // Abstract functions of the Sensor class implementation
     /** Interrupt-safe update */
-    void update() override;
+    virtual void update() override;
     /** get current angle (rad) */
-    float getSensorAngle() override;
+    virtual float getSensorAngle() override;
     /**  get current angular velocity (rad/s) */
-    float getVelocity() override;
+    virtual float getVelocity() override;
 
     // whether last step was CW (+1) or CCW (-1).  
     Direction direction;

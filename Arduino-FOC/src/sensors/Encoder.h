@@ -27,7 +27,7 @@ class Encoder: public Sensor{
     Encoder(int encA, int encB , float ppr, int index = 0);
 
     /** encoder initialise pins */
-    void init() override;
+    virtual void init() override;
     /**
      *  function enabling hardware interrupts for the encoder channels with provided callback functions
      *  if callback is not provided then the interrupt is not enabled
@@ -60,9 +60,9 @@ class Encoder: public Sensor{
 
     // Abstract functions of the Sensor class implementation
     /** get current angle (rad) */
-    float getSensorAngle() override;
+    virtual float getSensorAngle() override;
     /**  get current angular velocity (rad/s) */
-    float getVelocity() override;
+    virtual float getVelocity() override;
     virtual void update() override;
 
     /**
@@ -70,7 +70,7 @@ class Encoder: public Sensor{
      * 0 - encoder without index 
      * 1 - ecoder with index
      */
-    int needsSearch() override;
+    virtual int needsSearch() override;
 
   private:
     int hasIndex(); //!< function returning 1 if encoder has index pin and 0 if not.

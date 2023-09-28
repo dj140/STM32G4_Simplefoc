@@ -1,5 +1,5 @@
 #include "BLDCDriver3PWM.h"
-#define _PWM_RANGE 1000.0// 2^12 -1 = 4095
+#define _PWM_RANGE 1000.0f// 2^12 -1 = 4095
 #define pwm_frequency 25000 // 25khz
 BLDCDriver3PWM::BLDCDriver3PWM(int phA, int phB, int phC, int en1, int en2, int en3){
   // Pin initialization
