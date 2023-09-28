@@ -35,18 +35,18 @@ const PinInfo_TypeDef PIN_MAP[] =
     {GPIOA, TIM2, ADC1,  LL_GPIO_PIN_1, 2, ADC_CHANNEL_1_NUMBER}, /* PA1 */
     {GPIOA, TIM2, ADC1,  LL_GPIO_PIN_2, 3, ADC_CHANNEL_2_NUMBER}, /* PA2 */
     {GPIOA, TIM2, ADC1,  LL_GPIO_PIN_3, 4, ADC_CHANNEL_3_NUMBER}, /* PA3 */
-    {GPIOA, TIM2, ADC1,  LL_GPIO_PIN_4, 1, ADC_CHANNEL_4_NUMBER}, /* PA4 */
-    {GPIOA, TIM2, ADC1,  LL_GPIO_PIN_5, 1, ADC_CHANNEL_5_NUMBER}, /* PA5 */
-    {GPIOA, TIM3, ADC1,  LL_GPIO_PIN_6, 1, ADC_CHANNEL_6_NUMBER}, /* PA6 */
-    {GPIOA, TIM3, ADC1,  LL_GPIO_PIN_7, 2, ADC_CHANNEL_7_NUMBER}, /* PA7 */
-    {GPIOA, TIM1, NULL,  LL_GPIO_PIN_8, 1, ADC_Channel_X}, /* PA8 */
-    {GPIOA, TIM1, NULL,  LL_GPIO_PIN_9, 2, ADC_Channel_X}, /* PA9 */
-    {GPIOA, TIM1, NULL, LL_GPIO_PIN_10, 3, ADC_Channel_X}, /* PA10 */
-    {GPIOA, TIM1, NULL, LL_GPIO_PIN_11, 4, ADC_Channel_X}, /* PA11 */
-    {GPIOA, NULL, NULL, LL_GPIO_PIN_12, 0, ADC_Channel_X}, /* PA12 */
-    {GPIOA, NULL, NULL, LL_GPIO_PIN_13, 0, ADC_Channel_X}, /* PA13 */
-    {GPIOA, NULL, NULL, LL_GPIO_PIN_14, 0, ADC_Channel_X}, /* PA14 */
-    {GPIOA, NULL, NULL, LL_GPIO_PIN_15, 0, ADC_Channel_X}, /* PA15 */
+    {GPIOA, TIM3, ADC2,  LL_GPIO_PIN_4, 2, ADC_CHANNEL_4_NUMBER}, /* PA4 */
+    {GPIOA, TIM2, ADC2,  LL_GPIO_PIN_5, 1, ADC_CHANNEL_5_NUMBER}, /* PA5 */
+    {GPIOA, TIM3, ADC2,  LL_GPIO_PIN_6, 1, ADC_CHANNEL_6_NUMBER}, /* PA6 */
+    {GPIOA, TIM3, ADC2,  LL_GPIO_PIN_7, 2, ADC_CHANNEL_7_NUMBER}, /* PA7 */
+    {GPIOA, TIM1, NULL,  LL_GPIO_PIN_8, 1, ADC_CHANNEL_8_NUMBER}, /* PA8 */
+    {GPIOA, TIM1, NULL,  LL_GPIO_PIN_9, 2, ADC_CHANNEL_9_NUMBER}, /* PA9 */
+    {GPIOA, TIM1, NULL, LL_GPIO_PIN_10, 3, ADC_CHANNEL_10_NUMBER}, /* PA10 */
+    {GPIOA, TIM1, NULL, LL_GPIO_PIN_11, 4, ADC_CHANNEL_11_NUMBER}, /* PA11 */
+    {GPIOA, NULL, NULL, LL_GPIO_PIN_12, 0, ADC_CHANNEL_12_NUMBER}, /* PA12 */
+    {GPIOA, NULL, NULL, LL_GPIO_PIN_13, 0, ADC_CHANNEL_13_NUMBER}, /* PA13 */
+    {GPIOA, NULL, NULL, LL_GPIO_PIN_14, 0, ADC_CHANNEL_14_NUMBER}, /* PA14 */
+    {GPIOA, NULL, NULL, LL_GPIO_PIN_15, 0, ADC_CHANNEL_15_NUMBER}, /* PA15 */
 
     {GPIOB, TIM3, ADC1,  LL_GPIO_PIN_0, 3, ADC_CHANNEL_0_NUMBER}, /* PB0 */
     {GPIOB, TIM3, ADC1,  LL_GPIO_PIN_1, 4, ADC_CHANNEL_0_NUMBER}, /* PB1 */
@@ -165,51 +165,45 @@ void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMod
     if(pinMode_x == INPUT)
     {
 			  GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-			  GPIO_InitStruct.OutputType = LL_GPIO_PULL_NO;
+				GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     }
     else if(pinMode_x == INPUT_PULLUP)
     {
 			  GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-			  GPIO_InitStruct.OutputType = LL_GPIO_PULL_UP;
+				GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
     }
     else if(pinMode_x == INPUT_PULLDOWN)
     {
 			  GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-			  GPIO_InitStruct.OutputType = LL_GPIO_PULL_DOWN;
+				GPIO_InitStruct.Pull = LL_GPIO_PULL_DOWN;
     }
     else if(pinMode_x == INPUT_ANALOG)
     {
         GPIO_InitStruct.Mode  = LL_GPIO_MODE_ANALOG;
-			  GPIO_InitStruct.OutputType = LL_GPIO_PULL_NO;
+				GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     }
     else if(pinMode_x == OUTPUT)
     {
 				GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
 			  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-//        GPIO_Mode_x  = GPIO_Mode_OUT;
-//        GPIO_OType_x = GPIO_OType_PP;
-//        GPIO_PuPd_x  = GPIO_PuPd_NOPULL;
+				GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     }
     else if(pinMode_x == OUTPUT_OPEN_DRAIN)
     {
 				GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
 			  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_OPENDRAIN;
-//        GPIO_Mode_x  = GPIO_Mode_OUT;
-//        GPIO_OType_x = GPIO_OType_OD;
-//        GPIO_PuPd_x  = GPIO_PuPd_NOPULL;
+				GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     }
     else if(pinMode_x == OUTPUT_AF)
     {
 				GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
 			  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-//        GPIO_Mode_x  = GPIO_Mode_AF;
-//        GPIO_OType_x = GPIO_OType_PP;
-//        GPIO_PuPd_x  = GPIO_PuPd_NOPULL;
+				GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     }
 
     GPIO_InitStruct.Pin = GPIO_Pin_x;
     GPIO_InitStruct.Speed = GPIO_Speed_x;
-
+			
     LL_AHB2_GRP1_EnableClock(RCC_AHBPeriph_GPIOx);
     LL_GPIO_Init(GPIOx, &GPIO_InitStruct);
 }
@@ -225,9 +219,7 @@ uint8_t GPIO_GetPortNum(uint8_t Pin)
     else if(PIN_MAP[Pin].GPIOx == GPIOB)return 1;
     else if(PIN_MAP[Pin].GPIOx == GPIOC)return 2;
     else if(PIN_MAP[Pin].GPIOx == GPIOD)return 3;
-#if defined(GPIOE)
     else if(PIN_MAP[Pin].GPIOx == GPIOE)return 4;
-#endif
     else if(PIN_MAP[Pin].GPIOx == GPIOF)return 5;
     else return 0xFF;
 }

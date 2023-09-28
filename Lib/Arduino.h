@@ -37,8 +37,8 @@ extern "C" {
 #include "delay.h"
 #include "exti.h"
 #include "gpio.h"
-//#include "pwm.h"
-//#include "timer.h"
+#include "pwm.h"
+#include "timer.h"
 
 #define PI 3.1415926535897932384626433832795
 #define HALF_PI 1.5707963267948966192313216916398

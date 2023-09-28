@@ -29,19 +29,20 @@ extern "C" {
 
 #include "mcu_type.h"
 
-#define EXTI_ChannelPriority_Default 2
-
-#define EXTI_GetLine(Pin)            (1 << Pinx)
-#define EXTI_GetPortSourceGPIOx(Pin) (GPIO_GetPortNum(Pin))
-#define EXTI_GetPinSourcex(Pin)      (GPIO_GetPinNum(Pin))
-
-#define CHANGE  LL_EXTI_TRIGGER_RISING_FALLING
+#define CHANGE  LL_EXTI_TRIGGER_RISING_FALLING 
 #define FALLING LL_EXTI_TRIGGER_FALLING
 #define RISING  LL_EXTI_TRIGGER_RISING
-    
+
+#define EXTI_PreemptionPriority_Default 2
+#define EXTI_SubPriority_Default 1
+
+#define Get_EXTI_Linex(Pin) (1 << Pinx)
+#define Get_EXTI_PortSourceGPIOx(Pin) (Get_GPIOx(Pin))
+#define Get_EXTI_PinSourcex(Pin) (Get_Pinx(Pin))
+
 typedef void(*EXTI_CallbackFunction_t)(void);
-    
-void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, uint8_t Trigger_Mode, uint8_t ChannelPriority);
+
+void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, uint8_t Trigger_Mode, uint8_t PreemptionPriority, uint8_t SubPriority);
 void attachInterrupt(uint8_t Pin, EXTI_CallbackFunction_t function, uint8_t Trigger_Mode);
 void detachInterrupt(uint8_t Pin);
 

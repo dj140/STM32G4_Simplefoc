@@ -1,5 +1,6 @@
 #include "BLDCDriver3PWM.h"
-
+#define _PWM_RANGE 1000.0// 2^12 -1 = 4095
+#define pwm_frequency 25000 // 25khz
 BLDCDriver3PWM::BLDCDriver3PWM(int phA, int phB, int phC, int en1, int en2, int en3){
   // Pin initialization
   pwmA = phA;
@@ -14,7 +15,7 @@ BLDCDriver3PWM::BLDCDriver3PWM(int phA, int phB, int phC, int en1, int en2, int 
   // default power-supply value
   voltage_power_supply = DEF_POWER_SUPPLY;
   voltage_limit = NOT_SET;
-  pwm_frequency = NOT_SET;
+//  pwm_frequency = NOT_SET;
 
 }
 
@@ -57,6 +58,9 @@ int BLDCDriver3PWM::init() {
   // Set the pwm frequency to the pins
   // hardware specific function - depending on driver and mcu
 //  params = _configure3PWM(pwm_frequency, pwmA, pwmB, pwmC);
+	PWM_Init(pwmA, 1000, pwm_frequency);
+	PWM_Init(pwmB, 1000, pwm_frequency);
+	PWM_Init(pwmC, 1000, pwm_frequency);
   initialized = (params!=SIMPLEFOC_DRIVER_INIT_FAILED);
   return 0;
 }
@@ -89,4 +93,7 @@ void BLDCDriver3PWM::setPwm(float Ua, float Ub, float Uc) {
   // hardware specific writing
   // hardware specific function - depending on driver and mcu
 //  _writeDutyCycle3PWM(dc_a, dc_b, dc_c, params);
+	pwmWrite(pwmA, dc_a*_PWM_RANGE);
+	pwmWrite(pwmB, dc_b*_PWM_RANGE);
+	pwmWrite(pwmC, dc_c*_PWM_RANGE);
 }

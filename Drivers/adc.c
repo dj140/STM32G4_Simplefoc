@@ -128,8 +128,8 @@ static void ADC_DMA_Config()
   */
 void ADC_DMA_Init()
 {
-    ADC_CommonInitTypeDef ADC_CommonInitStructure;
-    ADC_InitTypeDef ADC_InitStructure;
+    LL_ADC_CommonInitTypeDef ADC_CommonInitStructure;
+    LL_ADC_InitTypeDef ADC_InitStructure;
     uint16_t index;
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE); //使能ADC时钟
@@ -143,15 +143,17 @@ void ADC_DMA_Init()
     ADC_CommonInitStructure.ADC_Mode          = ADC_Mode_Independent;/*独立模式*/
     ADC_CommonInitStructure.ADC_Prescaler     = ADC_Prescaler_Div6;/*APB2的4分频 即84/4=21M*/
     ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_20Cycles;/*两个采样阶段的延时5个时钟*/
-    ADC_CommonInit(&ADC_CommonInitStructure);/*初始化*/
+	  LL_ADC_CommonInit(__LL_ADC_COMMON_INSTANCE(ADC1), &ADC_CommonInitStructure);/*初始化*/
+
     /*初始化ADC1*/
-    ADC_InitStructure.ADC_Resolution  = ADC_Resolution_12b;/*12位模式*/
-    ADC_InitStructure.ADC_ScanConvMode = ENABLE;/*扫描模式*/
-    ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;/*连续转换*/
-    ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;/*禁止触发检测 使用软件触发*/
-    ADC_InitStructure.ADC_DataAlign    = ADC_DataAlign_Right;/*右对齐*/
-    ADC_InitStructure.ADC_NbrOfConversion = ADC_DMA_RegCnt;/*只使用1通道 规则通为1*/
-    ADC_Init(ADC1, &ADC_InitStructure); /*初始化*/
+    ADC_InitStructure.Resolution  = LL_ADC_RESOLUTION_12B;/*12位模式*/
+	  ADC_InitStructure.LowPowerMode = LL_ADC_LP_MODE_NONE;  
+    ADC_InitStructure.DataAlignment    = LL_ADC_DATA_ALIGN_RIGHT;/*右对齐*/
+//    ADC_InitStructure.ADC_ScanConvMode = ENABLE;/*扫描模式*/
+//    ADC_InitStructure.ADC_ContinuousConvMode = ENABLE;/*连续转换*/
+//    ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;/*禁止触发检测 使用软件触发*/
+//    ADC_InitStructure.ADC_NbrOfConversion = ADC_DMA_RegCnt;/*只使用1通道 规则通为1*/
+    LL_ADC_Init(ADC1, &ADC_InitStructure); /*初始化*/
 
     ADC_Cmd(ADC1, ENABLE); /*开启转换*/
     
