@@ -156,6 +156,21 @@ void Error_Handler(void);
 #define TIM_CLOCK_DIVIDER  1
 #define PWM_PERIOD_CYCLES (uint16_t)((ADV_TIM_CLK_MHz*(uint32_t)1000000u/((uint32_t)(PWM_FREQUENCY)))& ( uint16_t )0xFFFE)
 #define REP_COUNTER 			(uint16_t) ((REGULATION_EXECUTION_RATE *2u)-1u)
+#define INT_MODE  ((uint8_t)(0x02))
+#define NONE    ((uint8_t)(0x00))
+#define TIMxCCER_MASK_CH123        ((uint16_t)(LL_TIM_CHANNEL_CH1|LL_TIM_CHANNEL_CH1N|\
+                                               LL_TIM_CHANNEL_CH2|LL_TIM_CHANNEL_CH2N|\
+                                               LL_TIM_CHANNEL_CH3|LL_TIM_CHANNEL_CH3N))
+																							 
+#define HIGHER_FREQ 1U
+#define LOWER_FREQ  2U
+
+#define HIGHEST_FREQ 1U
+#define LOWEST_FREQ  2U
+
+#define FREQ_RATIO 1                /* Dummy value for single drive */
+#define FREQ_RELATION HIGHEST_FREQ  /* Dummy value for single drive */
+
 
 #ifndef NVIC_PRIORITYGROUP_0
 #define NVIC_PRIORITYGROUP_0         ((uint32_t)0x00000007) /*!< 0 bit  for pre-emption priority,

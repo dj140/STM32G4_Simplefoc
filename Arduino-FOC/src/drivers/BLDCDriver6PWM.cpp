@@ -1,4 +1,5 @@
 #include "BLDCDriver6PWM.h"
+#define _PWM_RANGE 1000.0// 2^12 -1 = 4095
 
 BLDCDriver6PWM::BLDCDriver6PWM(int phA_h,int phA_l,int phB_h,int phB_l,int phC_h,int phC_l, int en){
   // Pin initialization
@@ -48,12 +49,12 @@ void BLDCDriver6PWM::disable()
 int BLDCDriver6PWM::init() {
 
   // PWM pins
-  pinMode(pwmA_h, OUTPUT);
-  pinMode(pwmB_h, OUTPUT);
-  pinMode(pwmC_h, OUTPUT);
-  pinMode(pwmA_l, OUTPUT);
-  pinMode(pwmB_l, OUTPUT);
-  pinMode(pwmC_l, OUTPUT);
+//  pinMode(pwmA_h, OUTPUT);
+//  pinMode(pwmB_h, OUTPUT);
+//  pinMode(pwmC_h, OUTPUT);
+//  pinMode(pwmA_l, OUTPUT);
+//  pinMode(pwmB_l, OUTPUT);
+//  pinMode(pwmC_l, OUTPUT);
   if(_isset(enable_pin)) pinMode(enable_pin, OUTPUT);
 
 
@@ -90,6 +91,9 @@ void BLDCDriver6PWM::setPwm(float Ua, float Ub, float Uc) {
   // hardware specific writing
   // hardware specific function - depending on driver and mcu
 //  _writeDutyCycle6PWM(dc_a, dc_b, dc_c, phase_state, params);
+  pwmWrite(pwmA_h, dc_a*_PWM_RANGE);
+	pwmWrite(pwmB_h, dc_b*_PWM_RANGE);
+	pwmWrite(pwmC_h, dc_c*_PWM_RANGE);
 }
 
 

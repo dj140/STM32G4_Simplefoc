@@ -21,6 +21,7 @@
 #include "usart.h"
 #include "Arduino.h"
 #include <SimpleFOC.h>
+/* Private defines -----------------------------------------------------------*/
 
 // Motor instance
 BLDCMotor motor = BLDCMotor(11);
@@ -83,7 +84,6 @@ static void MX_ADC1_Init(void)
   LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   LL_RCC_SetADCClockSource(LL_RCC_ADC12_CLKSOURCE_PLL);
-
   /* Peripheral clock enable */
   LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_ADC12);
 
@@ -670,7 +670,106 @@ static void MX_OPAMP3_Init(void)
   /* USER CODE END OPAMP3_Init 2 */
 
 }
+/*
+  * @brief  Initializes @p TIMx peripheral with @p pHdl handler for PWM generation.
+  * 
+  */
 
+static void R3_2_TIMxInit(void)
+{
+//  PWMC_R3_2_Handle_t *pHandle = (PWMC_R3_2_Handle_t *)pHdl; //cstat !MISRAC2012-Rule-11.3
+  volatile uint32_t Brk2Timeout = 1000;
+
+  /* disable main TIM counter to ensure
+   * a synchronous start by TIM2 trigger */
+  LL_TIM_DisableCounter(TIM1);
+
+  LL_TIM_SetTriggerOutput(TIM1, LL_TIM_TRGO_RESET);
+
+  /* Enables the TIM1 Preload on CC1 Register */
+  LL_TIM_OC_EnablePreload(TIM1, LL_TIM_CHANNEL_CH1);
+  /* Enables the TIM1 Preload on CC2 Register */
+  LL_TIM_OC_EnablePreload(TIM1, LL_TIM_CHANNEL_CH2);
+  /* Enables the TIM1 Preload on CC3 Register */
+  LL_TIM_OC_EnablePreload(TIM1, LL_TIM_CHANNEL_CH3);
+  /* Enables the TIM1 Preload on CC4 Register */
+  LL_TIM_OC_EnablePreload(TIM1, LL_TIM_CHANNEL_CH4);
+  /* Prepare timer for synchronization */
+  LL_TIM_GenerateEvent_UPDATE(TIM1);
+  if (2U == FREQ_RATIO)
+  {
+    if (HIGHER_FREQ == FREQ_RELATION)
+    {
+      if (3U ==REP_COUNTER)
+      {
+        /* Set TIM1 repetition counter to 1 */
+        LL_TIM_SetRepetitionCounter(TIM1, 1);
+        LL_TIM_GenerateEvent_UPDATE(TIM1);
+        /* Repetition counter will be set to 3 at next Update */
+        LL_TIM_SetRepetitionCounter(TIM1, 3);
+      }
+      else
+      {
+        /* Nothing to do */
+      }
+    }
+    else
+    {
+      /* Nothing to do */
+    }
+    LL_TIM_SetCounter(TIM1, (uint32_t)PWM_PERIOD_CYCLES/2u - 1U);
+  }
+  else /* bFreqRatio equal to 1 or 3 */
+  {
+    if (1)
+    {
+      if (1U == REP_COUNTER)
+      {
+        LL_TIM_SetCounter(TIM1, (uint32_t)PWM_PERIOD_CYCLES/2u - 1U);
+      }
+      else if (3U == REP_COUNTER)
+      {
+        /* Set TIM1 repetition counter to 1 */
+        LL_TIM_SetRepetitionCounter(TIM1, 1);
+        LL_TIM_GenerateEvent_UPDATE(TIM1);
+        /* Repetition counter will be set to 3 at next Update */
+        LL_TIM_SetRepetitionCounter(TIM1, 3);
+      }
+      else
+      {
+        /* Nothing to do */
+      }
+    }
+    else
+    {
+      /* Nothing to do */
+    }
+  }
+  LL_TIM_ClearFlag_BRK(TIM1);
+
+  if ((INT_MODE) != NONE)
+  {
+    uint32_t result;
+    result = LL_TIM_IsActiveFlag_BRK2(TIM1);
+    while ((Brk2Timeout != 0u) && (1U == result))
+    {
+      LL_TIM_ClearFlag_BRK2(TIM1);
+      Brk2Timeout--;
+      result = LL_TIM_IsActiveFlag_BRK2(TIM1);
+    }
+  }
+  else
+  {
+    /* Nothing to do */
+  }
+  LL_TIM_EnableIT_BRK(TIM1);
+
+  /* Enable PWM channel */
+  LL_TIM_CC_EnableChannel(TIM1, ((uint16_t)(LL_TIM_CHANNEL_CH1|LL_TIM_CHANNEL_CH1N|\
+                                               LL_TIM_CHANNEL_CH2|LL_TIM_CHANNEL_CH2N|\
+                                               LL_TIM_CHANNEL_CH3|LL_TIM_CHANNEL_CH3N)));
+
+}
 /**
   * @brief TIM1 Initialization Function
   * @param None
@@ -816,7 +915,7 @@ void setup() {
 
   // driver config
   // power supply voltage [V]
-  driver.voltage_power_supply = 12;
+  driver.voltage_power_supply = 8;
   // limit the maximal dc voltage the driver can set
   // as a protection measure for the low-resistance motors
   // this value is fixed on startup
@@ -838,12 +937,12 @@ void setup() {
   motor.init();
 
   // add target command T
-  command.add('T', doTarget, "target velocity");
-  command.add('L', doLimit, "voltage limit");
+//  command.add('T', doTarget, "target velocity");
+//  command.add('L', doLimit, "voltage limit");
 
-  Serial.begin(115200);
-  Serial.println("Motor ready!");
-  Serial.println("Set target velocity [rad/s]");
+//  Serial.begin(115200);
+//  Serial.println("Motor ready!");
+//  Serial.println("Set target velocity [rad/s]");
   _delay(1000);
 }
 
@@ -915,7 +1014,7 @@ int main(void)
 
   /* Configure the system clock */
   SystemClock_Config();
-	
+	Delay_Init();
   /* Initialize all configured peripherals */
   MX_ADC1_Init();
   MX_ADC2_Init();
@@ -926,9 +1025,12 @@ int main(void)
   MX_DAC3_Init();
   MX_OPAMP1_Init();
   MX_OPAMP2_Init();
-  MX_OPAMP3_Init();
-  MX_TIM1_Init();
+  MX_OPAMP3_Init(); 
 
+  MX_TIM1_Init();	
+	MX_USART2_UART_Init();
+
+  R3_2_TIMxInit();
   /* Initialize interrupts */
   MX_NVIC_Init();
 	
@@ -938,9 +1040,9 @@ int main(void)
 
   /* Initialize all configured peripherals */
 //  MX_GPIO_Init();
-  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   setup();
+//	pinMode(PA15,OUTPUT);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -953,8 +1055,13 @@ int main(void)
   // to turn the motor "backwards", just set a negative target_velocity
   motor.move(target_velocity);
 
-  // user communication
-  command.run();
+//  // user communication
+//  command.run();
+//	digitalWrite_HIGH(PA15);
+//	delay(10);
+//  digitalWrite_LOW(PA15);
+//  delay(10);
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

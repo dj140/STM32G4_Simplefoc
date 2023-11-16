@@ -240,6 +240,24 @@ void TimerSet_InterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t InterruptTime_us)
 }
 
 /*****************************定时中断函数*********************************************/
+/**
+  * @brief  This function handles first motor TIMx Update interrupt request.
+  * @param  None
+  * @retval None
+  */
+void TIM1_UP_TIM16_IRQHandler(void)
+{
+ /* USER CODE BEGIN TIMx_UP_M1_IRQn 0 */
+
+ /* USER CODE END  TIMx_UP_M1_IRQn 0 */
+
+    LL_TIM_ClearFlag_UPDATE(TIM1);
+//    ( void )R3_2_TIMx_UP_IRQHandler(&PWM_Handle_M1);
+ /* USER CODE BEGIN TIMx_UP_M1_IRQn 1 */
+
+ /* USER CODE END  TIMx_UP_M1_IRQn 1 */
+}
+
 void TIM1_BRK_TIM15_IRQHandler(void)
 {
     if (LL_TIM_IsActiveFlag_UPDATE(TIM1) != RESET)

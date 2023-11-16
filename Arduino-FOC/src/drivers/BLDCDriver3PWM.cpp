@@ -44,9 +44,9 @@ void BLDCDriver3PWM::disable()
 // init hardware pins
 int BLDCDriver3PWM::init() {
   // PWM pins
-  pinMode(pwmA, OUTPUT);
-  pinMode(pwmB, OUTPUT);
-  pinMode(pwmC, OUTPUT);
+//  pinMode(pwmA, OUTPUT);
+//  pinMode(pwmB, OUTPUT);
+//  pinMode(pwmC, OUTPUT);
   if( _isset(enableA_pin)) pinMode(enableA_pin, OUTPUT);
   if( _isset(enableB_pin)) pinMode(enableB_pin, OUTPUT);
   if( _isset(enableC_pin)) pinMode(enableC_pin, OUTPUT);
@@ -58,9 +58,9 @@ int BLDCDriver3PWM::init() {
   // Set the pwm frequency to the pins
   // hardware specific function - depending on driver and mcu
 //  params = _configure3PWM(pwm_frequency, pwmA, pwmB, pwmC);
-	PWM_Init(pwmA, 1000, pwm_frequency);
-	PWM_Init(pwmB, 1000, pwm_frequency);
-	PWM_Init(pwmC, 1000, pwm_frequency);
+//	PWM_Init(pwmA, 1000, pwm_frequency);
+//	PWM_Init(pwmB, 1000, pwm_frequency);
+//	PWM_Init(pwmC, 1000, pwm_frequency);
   initialized = (params!=SIMPLEFOC_DRIVER_INIT_FAILED);
   return 0;
 }

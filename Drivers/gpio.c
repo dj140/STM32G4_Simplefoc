@@ -157,7 +157,7 @@ void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMod
     else if(GPIOx == GPIOC)RCC_AHBPeriph_GPIOx = LL_AHB2_GRP1_PERIPH_GPIOC;
     else if(GPIOx == GPIOD)RCC_AHBPeriph_GPIOx = LL_AHB2_GRP1_PERIPH_GPIOD;
 #if (defined(GPIOE) && defined(RCC_AHBPeriph_GPIOE))
-    else if(GPIOx == GPIOE)RCC_AHBPeriph_GPIOx = RCC_AHBPeriph_GPIOE;
+    else if(GPIOx == GPIOE)RCC_AHBPeriph_GPIOx = LL_AHB2_GRP1_PERIPH_GPIOE;
 #endif
     else if(GPIOx == GPIOF)RCC_AHBPeriph_GPIOx = LL_AHB2_GRP1_PERIPH_GPIOF;
     else return;

@@ -35,7 +35,7 @@ void pinMode(uint8_t Pin, pinMode_TypeDef pinMode_x)
     
     if(pinMode_x == PWM)
     {
-//        PWM_Init(Pin, 1000, 2000);
+        PWM_Init(Pin, 1000, 2000);
     }
     else if(pinMode_x == INPUT_ANALOG_DMA)
     {
