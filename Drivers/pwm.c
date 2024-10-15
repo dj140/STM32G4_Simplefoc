@@ -169,6 +169,8 @@ uint16_t pwmWrite(uint8_t Pin, uint16_t val)
 {
     switch(PIN_MAP[Pin].TimerChannel)
     {
+//			val = ((timer_get_compare(TIM1, PIN_MAP[Pin].TimerChannel) + 1) * val) / ((1 << 12) - 1) ;
+
     case 1:
         PIN_MAP[Pin].TIMx->CCR1 = val;
         break;

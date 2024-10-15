@@ -27,7 +27,7 @@ volatile uint16_t adcBuffer2[ADC_BUF_LEN_2] = {0}; // Buffer for store the resul
 
 // function reading an ADC value and returning the read voltage
 // As DMA is being used just return the DMA result
-float _readADCVoltageInline(const int pin, const void* cs_params){
+float _readADCVoltageLowSide(const int pin, const void* cs_params){
   uint32_t raw_adc = 0;
   if(pin == PA2)  // = ADC1_IN3 = phase U (OP1_OUT) on B-G431B-ESC1
     raw_adc = adcBuffer1[1];
@@ -110,6 +110,9 @@ void* _configureADCLowSide(const void* driver_params, const int pinA,const int p
   MX_ADC1_Init(&hadc1);
   MX_ADC2_Init(&hadc2);
 
+  HAL_ADCEx_Calibration_Start(&hadc1,ADC_SINGLE_ENDED);
+  HAL_ADCEx_Calibration_Start(&hadc2,ADC_SINGLE_ENDED);
+
   MX_DMA1_Init(&hadc1, &hdma_adc1, DMA1_Channel1, DMA_REQUEST_ADC1);
   MX_DMA1_Init(&hadc2, &hdma_adc2, DMA1_Channel2, DMA_REQUEST_ADC2);
 
@@ -145,7 +148,7 @@ void DMA1_Channel2_IRQHandler(void) {
 }
 }
 
-void _driverSyncLowSide(void* _driver_params, void* _cs_params){
+void* _driverSyncLowSide(void* _driver_params, void* _cs_params){
   STM32DriverParams* driver_params = (STM32DriverParams*)_driver_params;
   Stm32CurrentSenseParams* cs_params = (Stm32CurrentSenseParams*)_cs_params;
    
@@ -166,6 +169,10 @@ void _driverSyncLowSide(void* _driver_params, void* _cs_params){
   // restart all the timers of the driver
   _startTimers(driver_params->timers, 6);
 
+  // return the cs parameters 
+  // successfully initialized
+  // TODO verify if success in future
+  return _cs_params;
 }
 
 #endif

@@ -20,7 +20,7 @@ class GenericCurrentSense: public CurrentSense{
     // CurrentSense interface implementing functions 
     virtual int init() override;
     virtual PhaseCurrent_s getPhaseCurrents() override;
-    virtual int driverAlign(float align_voltage) override;
+    virtual int driverAlign(float align_voltage, bool modulation_centered) override;
 
 
     PhaseCurrent_s (*readCallback)() = nullptr; //!< function pointer to sensor reading

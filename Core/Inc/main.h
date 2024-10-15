@@ -132,10 +132,10 @@ void Error_Handler(void);
 /* Torque and flux regulation loops */
 #define REGULATION_EXECUTION_RATE     1    /*!< FOC execution rate in number of PWM cycles */
 #define ADV_TIM_CLK_MHz  170 /* Actual TIM clk including Timer clock divider*/
-#define PWM_FREQUENCY   20000
+#define PWM_FREQUENCY   25000
 #define HTMIN 1 /* Required for main.c compilation only, CCR4 is overwritten at runtime */
 #define TIM_CLOCK_DIVIDER  1
-#define SW_DEADTIME_NS                   750 /*!< Dead-time to be inserted by FW, only if low side signals are enabled */
+#define SW_DEADTIME_NS                   50 /*!< Dead-time to be inserted by FW, only if low side signals are enabled */
 #define DEADTIME_NS  SW_DEADTIME_NS
 
 #define DEAD_TIME_ADV_TIM_CLK_MHz (ADV_TIM_CLK_MHz * TIM_CLOCK_DIVIDER)

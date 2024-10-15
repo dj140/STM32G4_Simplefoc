@@ -40,9 +40,9 @@ class MagneticSensorSPI: public Sensor{
 
     /** sensor initialise pins */
     void init(SPIClass* _spi = &SPI);
- 
-    using Sensor::init;
- 
+
+		using Sensor::init;
+
     // implementation of abstract functions of the Sensor class
     /** get current angle (rad) */
     virtual float getSensorAngle() override;

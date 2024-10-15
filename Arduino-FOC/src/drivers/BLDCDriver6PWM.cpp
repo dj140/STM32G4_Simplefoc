@@ -1,5 +1,5 @@
 #include "BLDCDriver6PWM.h"
-#define _PWM_RANGE 1000.0// 2^12 -1 = 4095
+#define _PWM_RANGE 4095.0// 2^12 -1 = 4095
 
 BLDCDriver6PWM::BLDCDriver6PWM(int phA_h,int phA_l,int phB_h,int phB_l,int phC_h,int phC_l, int en){
   // Pin initialization

@@ -28,7 +28,7 @@ BLDCMotor motor = BLDCMotor(11);
 
 BLDCDriver6PWM driver = BLDCDriver6PWM(PA8, PC13, PA9, PA12, PA10, PB15);
 //target variable
-float target_velocity = 0;
+float target_velocity = 20;
 
 // instantiate the commander
 Commander command = Commander(Serial);
@@ -746,29 +746,25 @@ static void R3_2_TIMxInit(void)
     }
   }
   LL_TIM_ClearFlag_BRK(TIM1);
+	uint32_t result;
+	result = LL_TIM_IsActiveFlag_BRK2(TIM1);
+	while ((Brk2Timeout != 0u) && (1U == result))
+	{
+		LL_TIM_ClearFlag_BRK2(TIM1);
+		Brk2Timeout--;
+		result = LL_TIM_IsActiveFlag_BRK2(TIM1);
+	}
+ 
 
-  if ((INT_MODE) != NONE)
-  {
-    uint32_t result;
-    result = LL_TIM_IsActiveFlag_BRK2(TIM1);
-    while ((Brk2Timeout != 0u) && (1U == result))
-    {
-      LL_TIM_ClearFlag_BRK2(TIM1);
-      Brk2Timeout--;
-      result = LL_TIM_IsActiveFlag_BRK2(TIM1);
-    }
-  }
-  else
-  {
-    /* Nothing to do */
-  }
   LL_TIM_EnableIT_BRK(TIM1);
 
   /* Enable PWM channel */
   LL_TIM_CC_EnableChannel(TIM1, ((uint16_t)(LL_TIM_CHANNEL_CH1|LL_TIM_CHANNEL_CH1N|\
                                                LL_TIM_CHANNEL_CH2|LL_TIM_CHANNEL_CH2N|\
                                                LL_TIM_CHANNEL_CH3|LL_TIM_CHANNEL_CH3N)));
-
+	LL_TIM_EnableIT_CC1 (TIM1);
+  LL_TIM_EnableCounter(TIM1);
+	LL_TIM_EnableAllOutputs(TIM1);
 }
 /**
   * @brief TIM1 Initialization Function
@@ -915,11 +911,11 @@ void setup() {
 
   // driver config
   // power supply voltage [V]
-  driver.voltage_power_supply = 8;
+  driver.voltage_power_supply = 24;
   // limit the maximal dc voltage the driver can set
   // as a protection measure for the low-resistance motors
   // this value is fixed on startup
-  driver.voltage_limit = 6;
+//  driver.voltage_limit = 6;
   driver.init();
   // link the motor and the driver
   motor.linkDriver(&driver);
@@ -928,8 +924,9 @@ void setup() {
   // limit the voltage to be set to the motor
   // start very low for high resistance motors
   // current = voltage / resistance, so try to be well under 1Amp
-  motor.voltage_limit = 3;   // [V]
- 
+//  motor.voltage_limit = 3;   // [V]
+   motor.voltage_limit = 3;   // [V]
+
   // open loop control config
   motor.controller = MotionControlType::velocity_openloop;
 
@@ -1029,6 +1026,7 @@ int main(void)
 
   MX_TIM1_Init();	
 	MX_USART2_UART_Init();
+  setup();
 
   R3_2_TIMxInit();
   /* Initialize interrupts */
@@ -1041,7 +1039,6 @@ int main(void)
   /* Initialize all configured peripherals */
 //  MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  setup();
 //	pinMode(PA15,OUTPUT);
   /* USER CODE END 2 */
 

@@ -47,6 +47,7 @@ class HallSensor: public Sensor{
     int pinA; //!< HallSensor hardware pin A
     int pinB; //!< HallSensor hardware pin B
     int pinC; //!< HallSensor hardware pin C
+    int use_interrupt; //!< True if interrupts have been attached
 
     // HallSensor configuration
     Pullup pullup; //!< Configuration parameter internal or external pullups
@@ -62,6 +63,7 @@ class HallSensor: public Sensor{
 
     // whether last step was CW (+1) or CCW (-1).  
     Direction direction;
+    Direction old_direction;
 
     void attachSectorCallback(void (*onSectorChange)(int a) = nullptr);
 
