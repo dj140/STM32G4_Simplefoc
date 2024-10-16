@@ -775,6 +775,7 @@ static void MX_TIM1_Init(void)
 {
 
   /* USER CODE BEGIN TIM1_Init 0 */
+//	uint32_t dead_time = __LL_TIM_CALC_DEADTIME(SystemCoreClock, LL_TIM_GetClockDivision(TIM1), SW_DEADTIME_NS);
 
   /* USER CODE END TIM1_Init 0 */
 
@@ -792,6 +793,7 @@ static void MX_TIM1_Init(void)
   /* USER CODE END TIM1_Init 1 */
   TIM_InitStruct.Prescaler = ((TIM_CLOCK_DIVIDER) - 1);
   TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_CENTER_UP;
+	//PWM_PERIOD_CYCLES = (uint16_t)((ADV_TIM_CLK_MHz*(uint32_t)1000000u/((uint32_t)(PWM_FREQUENCY)))& ( uint16_t )0xFFFE)
   TIM_InitStruct.Autoreload = ((PWM_PERIOD_CYCLES) / 2);
   TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV2;
   TIM_InitStruct.RepetitionCounter = (REP_COUNTER);
@@ -844,6 +846,7 @@ static void MX_TIM1_Init(void)
   TIM_BDTRInitStruct.AutomaticOutput = LL_TIM_AUTOMATICOUTPUT_DISABLE;
   LL_TIM_BDTR_Init(TIM1, &TIM_BDTRInitStruct);
   /* USER CODE BEGIN TIM1_Init 2 */
+//  LL_TIM_OC_SetDeadTime(TIM1, dead_time); // deadtime is non linear!
 
   /* USER CODE END TIM1_Init 2 */
   LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOC);

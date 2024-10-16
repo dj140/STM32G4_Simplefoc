@@ -37,6 +37,8 @@ void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerCh
 uint8_t TIM_GetGPIO_AF(uint8_t Pin);
 
 uint16_t timer_get_compare(TIM_TypeDef* TIMx, uint8_t TimerChannel);
+uint16_t timer_get_reload(TIM_TypeDef* TIMx);
+
 void timer_set_prescaler(TIM_TypeDef* TIMx, uint16_t psc);
 void timer_set_reload(TIM_TypeDef* TIMx, uint16_t arr);
 void timer_generate_update(TIM_TypeDef* TIMx);

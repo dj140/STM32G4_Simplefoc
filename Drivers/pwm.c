@@ -167,10 +167,11 @@ uint8_t TIM_GetGPIO_AF(uint8_t Pin)
   */
 uint16_t pwmWrite(uint8_t Pin, uint16_t val)
 {
+		//12bit RESOLUTION
+		val = ((timer_get_reload(PIN_MAP[Pin].TIMx) + 1) * val) / ((1 << 12) - 1);
+
     switch(PIN_MAP[Pin].TimerChannel)
     {
-//			val = ((timer_get_compare(TIM1, PIN_MAP[Pin].TimerChannel) + 1) * val) / ((1 << 12) - 1) ;
-
     case 1:
         PIN_MAP[Pin].TIMx->CCR1 = val;
         break;
@@ -225,7 +226,18 @@ uint16_t timer_get_compare(TIM_TypeDef* TIMx, uint8_t TimerChannel)
     }
     return compare;
 }
-
+/**
+  * @brief  获取捕获值
+  * @param  TIMx: 定时器地址
+  * @param  TimerChannel: 定时器通道
+  * @retval 捕获值
+  */
+uint16_t timer_get_reload(TIM_TypeDef* TIMx)
+{
+    uint16_t arr = 0;
+		arr = TIMx->ARR;
+    return arr;
+}
 /**
   * @brief  更新定时器时钟预分频数
   * @param  TIMx: 定时器地址
